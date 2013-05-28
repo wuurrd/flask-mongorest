@@ -1,10 +1,19 @@
+import os
 from setuptools import setup
+
+here = os.path.abspath(os.path.dirname(__file__))
+read_file = lambda filename: open(os.path.join(here, filename)).read()
+read_requirements = lambda filename: read_file(filename).splitlines()
 
 # Stops exit traceback on tests
 try:
     import multiprocessing
 except:
-   pass
+    pass
+
+test_requirements = [
+    'nose'
+]
 
 setup(
     name='Flask-MongoRest',
@@ -16,7 +25,7 @@ setup(
     maintainer='Anthony Nemitz',
     maintainer_email='anemitz@gmail.com',
     description='Flask restful API framework for MongoDB/MongoEngine',
-    long_description=__doc__,
+    long_description=read_file('README.md'),
     packages=[
         'flask_mongorest',
     ],
@@ -26,15 +35,9 @@ setup(
     test_suite='nose.collector',
     zip_safe=False,
     platforms='any',
-    install_requires=[
-        'Flask-Views',
-        'Flask-MongoEngine',
-        'mimerender',
-        'nose', 
-        'coverage',
-        'python-dateutil',
-        'cleancat'
-    ],
+    install_requires=read_requirements('requirements.txt'),
+    tests_require=test_requirements,
+    extras_require={'test': test_requirements},
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
