@@ -4,6 +4,7 @@ services: mongodb
 python:
     - 2.7
 install:
-    - python setup.py install
+    - pip install -e .
+    - pip install -e '.[test]'
 script:
     - python setup.py nosetests
