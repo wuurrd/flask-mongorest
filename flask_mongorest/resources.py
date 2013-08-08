@@ -35,6 +35,7 @@ class Resource(object):
     paginate = True
     select_related = False
     allowed_ordering = []
+    allow_operator_value_none = False
     uri_prefix = None # Must start and end with a "/"
     max_limit = 1000 # cap the number of records in the _limit param to avoid DDoS'ing the API.
 
@@ -357,6 +358,8 @@ class Resource(object):
             if parts:
                 field = '%s__%s' % (field, '__'.join(parts))
             field = self._reverse_rename_fields.get(field, field)
+            if self.allow_operator_value_none and value == 'None':
+                value = None
             qs = operator().apply(qs, field, value, negate)
         limit = None
         if params.get('_order_by'):
